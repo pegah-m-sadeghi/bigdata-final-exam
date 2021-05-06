@@ -1,1 +1,35 @@
 
+Pseudo-code: 
+----------------- 
+Select K random points from data, assign to a variable named "centroids" 
+ 
+def update_clusters(): 
+    for c in centroids: 
+        for data_point in data: 
+            Assign data_point with minimum distance(data_point, c) to clusters[c] 
+ 
+update_clusters() 
+ 
+def update_centroids(): 
+    new_centroids = [] 
+    for c in centroids: 
+        Calculate "mean" for clustters[c] 
+        new_centroids.append([mean, clustters[c].data_points]) 
+    return new_centroids 
+ 
+while(true): 
+    new_centroids = update_centroids() 
+    if new_centroids == centroids: 
+        break 
+    centroids = new_centroids: 
+    update_clusters() 
+ 
+# clustered data_points available in "clusters" 
+----------------- 
+ 
+The "update_clusters" function where we calculate distance for each data point and also calculating "mean" in "update_centroids" are the main two bottlenecks for large datasets. 
+Implementing these loops with a Big Data stack like RDD.map parallelizes the computation. 
+ 
+Since the key component of kmeans is the "distance" calculation, it is sensitive to initialization. Example in the link below shows a case when bad initialization can hinder finding the optimum solution: 
+[LINK] 
+In the "Bad initialization" example for this scenario, distance function computes about the same distance for all outer data points.
